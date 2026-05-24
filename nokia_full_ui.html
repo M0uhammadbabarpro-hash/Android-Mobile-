@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nokia 230</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;400;600&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:linear-gradient(135deg,#0a0a1a,#1a1a3e,#0d2137);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  font-family:'Exo 2',sans-serif;
+}
+
+/* ── PHONE SHELL ── */
+.phone{
+  width:270px;
+  background:linear-gradient(170deg,#2a2d38 0%,#1c1f2b 40%,#14161f 100%);
+  border-radius:32px 32px 24px 24px;
+  padding:14px 12px 20px;
+  box-shadow:0 0 0 1px #3a3d4a,0 0 0 3px #0d0f15,0 30px 80px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.07);
+  position:relative;
+}
+
+/* top pill / speaker */
+.top-pill{
+  width:60px;height:6px;background:#111;border-radius:3px;margin:0 auto 10px;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.8);
+}
+.camera-led{
+  position:absolute;top:18px;right:26px;width:5px;height:5px;
+  border-radius:50%;background:#1a6b1a;
+  box-shadow:0 0 6px #0f0;
+}
+.nokia-top{
+  text-align:center;font-family:'Orbitron',monospace;font-size:11px;
+  letter-spacing:4px;color:#5588aa;margin-bottom:8px;
+}
+
+/* ── STATUS BAR ── */
+.status-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:2px 8px;margin-bottom:4px;
+}
+.sig{display:flex;gap:2px;align-items:flex-end;}
+.sig span{width:3px;background:#7aabcc;border-radius:1px;}
+.sig span:nth-child(1){height:4px;}
+.sig span:nth-child(2){height:6px;}
+.sig span:nth-child(3){height:8px;}
+.sig span:nth-child(4){height:10px;}
+.carrier{font-size:8px;color:#7aabcc;letter-spacing:1px;}
+.batt-wrap{display:flex;align-items:center;gap:3px;}
+.batt{width:22px;height:10px;border:1.5px solid #666;border-radius:2px;position:relative;padding:1px;}
+.batt::after{content:'';position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:2.5px;height:5px;background:#666;border-radius:0 1px 1px 0;}
+.batt-fill{height:100%;border-radius:1px;transition:width .4s,background .4s;}
+.batt-pct{font-size:8px;color:#888;}
+
+/* ── SCREEN ── */
+.screen-frame{
+  background:#050810;border-radius:12px;padding:3px;
+  box-shadow:inset 0 0 12px rgba(0,0,0,.9),0 0 0 1px #222;
+  margin-bottom:10px;
+}
+.screen{
+  width:100%;height:200px;border-radius:9px;overflow:hidden;position:relative;
+  background:#050810;
+}
+
+/* ── ALL SCREENS ── */
+.view{position:absolute;inset:0;display:none;flex-direction:column;}
+.view.active{display:flex;}
+
+/* LOCK */
+#vLock{
+  background:linear-gradient(180deg,#060d1a,#0d1f35,#060d1a);
+  align-items:center;justify-content:center;gap:4px;
+}
+.lock-wallpaper{
+  position:absolute;inset:0;opacity:.12;
+  background:radial-gradient(ellipse at 50% 30%,#2266aa,transparent 70%),
+             radial-gradient(ellipse at 20% 80%,#0044aa,transparent 50%);
+}
+.lock-cam-label{position:absolute;top:6px;left:8px;font-size:8px;color:#4488bb;letter-spacing:1px;}
+.lock-time-right{position:absolute;top:5px;right:8px;font-size:10px;color:#5599cc;font-family:'Orbitron',monospace;letter-spacing:1px;}
+.lock-big-time{font-family:'Orbitron',monospace;font-size:42px;font-weight:700;color:#fff;letter-spacing:2px;text-shadow:0 0 20px rgba(80,160,255,.4);z-index:1;line-height:1;}
+.lock-date{font-size:10px;color:#6699bb;letter-spacing:2px;z-index:1;}
+.lock-hint{position:absolute;bottom:12px;font-size:8px;color:rgba(255,255,255,.35);letter-spacing:1px;z-index:1;}
+
+/* HOME MENU */
+#vHome{background:#080f1a;}
+.home-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:5px 8px;background:rgba(0,0,0,.4);font-size:8px;color:#5588aa;
+  flex-shrink:0;
+}
+.app-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  padding:8px;overflow-y:auto;flex:1;
+}
+.app-icon{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;padding:4px;border-radius:8px;transition:background .15s;
+}
+.app-icon:hover,.app-icon.sel{background:rgba(80,150,220,.2);}
+.app-icon .ic{
+  width:36px;height:36px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;font-size:18px;box-shadow:0 3px 8px rgba(0,0,0,.5);
+}
+.app-icon span{font-size:7px;color:#aac;text-align:center;letter-spacing:.5px;}
+.home-bottom{
+  display:flex;justify-content:space-around;padding:4px 0;
+  background:rgba(0,0,0,.5);border-top:1px solid rgba(255,255,255,.05);
+  flex-shrink:0;font-size:7px;color:#668;
+}
+
+/* INNER SCREENS */
+#vPhone,#vMsg,#vContacts,#vClock,#vSettings,#vMedia,#vGame,#vCamera{
+  background:#06101a;color:#cce;
+}
+.app-header{
+  background:linear-gradient(90deg,#0a1a2e,#0d2040);
+  padding:6px 10px;display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid rgba(80,150,220,.2);flex-shrink:0;
+}
+.app-header .back-btn{font-size:10px;color:#5599cc;cursor:pointer;padding:2px 5px;background:rgba(80,150,220,.1);border-radius:4px;}
+.app-header .app-title{font-size:11px;color:#88ccee;letter-spacing:1px;font-weight:600;}
+.app-content{flex:1;overflow-y:auto;padding:6px;}
+
+/* Phone dialer */
+.dialer-display{
+  background:#040c14;border-radius:8px;padding:8px;margin-bottom:8px;
+  text-align:center;font-family:'Orbitron',monospace;font-size:20px;
+  color:#7af;min-height:36px;letter-spacing:3px;
+}
+.dial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
+.dial-btn{
+  padding:7px;text-align:center;background:rgba(40,80,120,.3);
+  border-radius:6px;cursor:pointer;font-size:13px;color:#cce;
+  font-weight:600;border:1px solid rgba(80,150,220,.1);
+  transition:background .1s;
+}
+.dial-btn:active,.dial-btn.pr{background:rgba(80,150,220,.4);}
+.dial-btn sub{font-size:7px;color:#668;font-weight:normal;display:block;line-height:1;}
+.dial-call{background:linear-gradient(135deg,#1a6e2e,#0d4a1e)!important;color:#4f6!important;font-size:16px!important;}
+.dial-del{background:rgba(120,40,40,.3)!important;color:#f88!important;font-size:14px!important;}
+
+/* Messages */
+.msg-list{display:flex;flex-direction:column;gap:4px;}
+.msg-item{
+  padding:6px 8px;background:rgba(20,40,70,.5);border-radius:6px;
+  border-left:2px solid #2266aa;cursor:pointer;
+}
+.msg-item .mi-name{font-size:9px;color:#7af;font-weight:600;}
+.msg-item .mi-text{font-size:8px;color:#889;margin-top:1px;}
+.msg-item .mi-time{font-size:7px;color:#556;float:right;}
+.msg-compose{
+  margin-top:6px;padding:4px;background:rgba(10,30,60,.6);border-radius:6px;
+}
+.msg-compose textarea{
+  width:100%;background:transparent;border:none;color:#aac;font-size:8px;
+  resize:none;outline:none;font-family:'Exo 2',sans-serif;
+}
+.msg-send-btn{
+  width:100%;padding:4px;background:linear-gradient(90deg,#1a4a8e,#0d2a5a);
+  border-radius:4px;text-align:center;font-size:8px;color:#7af;cursor:pointer;margin-top:3px;
+}
+
+/* Contacts */
+.contact-search{
+  padding:4px 8px;background:rgba(10,30,60,.8);border-radius:6px;
+  border:1px solid rgba(80,150,220,.2);color:#aac;font-size:9px;width:100%;
+  outline:none;font-family:'Exo 2',sans-serif;margin-bottom:6px;
+}
+.contact-list{display:flex;flex-direction:column;gap:3px;}
+.contact-item{
+  display:flex;align-items:center;gap:6px;padding:5px 6px;
+  background:rgba(20,40,70,.4);border-radius:6px;cursor:pointer;
+}
+.contact-avatar{
+  width:24px;height:24px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;
+}
+.contact-name{font-size:9px;color:#bbd;}
+.contact-num{font-size:7px;color:#667;}
+
+/* Clock */
+.clock-main{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex:1;gap:4px;
+}
+.clock-analog{position:relative;width:100px;height:100px;margin:0 auto 8px;}
+.clock-analog svg{width:100%;height:100%;}
+.clock-digital{font-family:'Orbitron',monospace;font-size:24px;color:#7af;letter-spacing:3px;}
+.clock-date-full{font-size:9px;color:#557;letter-spacing:1px;}
+.alarm-section{padding:6px;background:rgba(10,30,60,.5);border-radius:6px;margin-top:6px;}
+.alarm-label{font-size:8px;color:#557;margin-bottom:3px;}
+.alarm-item{display:flex;justify-content:space-between;align-items:center;padding:3px 0;}
+.alarm-time{font-size:10px;color:#aac;font-family:'Orbitron',monospace;}
+.alarm-toggle{width:24px;height:12px;background:rgba(40,80,140,.3);border-radius:6px;position:relative;cursor:pointer;}
+.alarm-toggle.on{background:rgba(40,120,80,.5);}
+.alarm-toggle::after{
+  content:'';position:absolute;top:1px;left:1px;width:10px;height:10px;
+  background:#7af;border-radius:50%;transition:.2s;
+}
+.alarm-toggle.on::after{left:13px;background:#4f6;}
+
+/* Settings */
+.setting-item{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;
+  border-radius:6px;transition:background .12s;
+}
+.setting-item:hover,.setting-item:active,.setting-item.tapped{background:rgba(80,150,220,.18);}
+.setting-label{font-size:9px;color:#aac;pointer-events:none;}
+.setting-val{font-size:8px;color:#5af;pointer-events:none;font-weight:600;}
+.setting-val.on-val{color:#4f6!important;}
+.setting-val.off-val{color:#f88!important;}
+
+/* Media Player */
+.media-art{
+  width:70px;height:70px;border-radius:12px;margin:8px auto;
+  background:linear-gradient(135deg,#1a0a3a,#3a1a6a,#1a0a3a);
+  display:flex;align-items:center;justify-content:center;font-size:30px;
+  box-shadow:0 0 20px rgba(100,50,200,.4);
+}
+.media-track{text-align:center;font-size:10px;color:#bbd;margin-bottom:2px;font-weight:600;}
+.media-artist{text-align:center;font-size:8px;color:#668;margin-bottom:8px;}
+.media-progress{height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin:6px 0;}
+.media-bar{height:100%;width:35%;background:linear-gradient(90deg,#7a4ccc,#bb66ff);border-radius:2px;}
+.media-controls{display:flex;justify-content:center;gap:12px;margin-top:8px;}
+.media-btn{
+  width:32px;height:32px;border-radius:50%;background:rgba(100,50,200,.2);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  cursor:pointer;border:1px solid rgba(150,80,255,.2);transition:background .15s;
+}
+.media-btn:hover{background:rgba(100,50,200,.4);}
+.media-btn.play-btn{width:40px;height:40px;background:linear-gradient(135deg,#5a2aaa,#9955dd);border:none;font-size:18px;}
+.media-list{margin-top:8px;}
+.media-list-item{
+  padding:4px 6px;font-size:8px;color:#889;border-bottom:1px solid rgba(255,255,255,.04);
+  cursor:pointer;display:flex;align-items:center;gap:4px;
+}
+.media-list-item.playing{color:#bb88ff;}
+.media-list-item::before{content:'♪';opacity:.4;}
+
+/* Camera */
+.camera-view{
+  flex:1;background:linear-gradient(180deg,#0a1520,#0d2035);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.cam-grid{position:absolute;inset:0;opacity:.1;}
+.cam-crosshair{
+  width:50px;height:50px;border:1px solid rgba(100,200,255,.5);
+  position:relative;
+}
+.cam-crosshair::before,.cam-crosshair::after{
+  content:'';position:absolute;background:rgba(100,200,255,.5);
+}
+.cam-crosshair::before{width:1px;height:100%;left:50%;top:0;}
+.cam-crosshair::after{height:1px;width:100%;top:50%;left:0;}
+.cam-controls{
+  padding:6px;display:flex;justify-content:space-between;align-items:center;
+  background:rgba(0,0,0,.6);flex-shrink:0;
+}
+.cam-btn{font-size:8px;color:#7af;cursor:pointer;padding:4px 8px;background:rgba(40,100,180,.2);border-radius:4px;}
+.cam-shutter{
+  width:32px;height:32px;border-radius:50%;border:3px solid #fff;
+  background:rgba(255,255,255,.2);cursor:pointer;transition:background .15s;
+}
+.cam-shutter:hover{background:rgba(255,255,255,.6);}
+
+/* CAR GAME */
+#vGame{flex-direction:column;}
+#gameCanvas{width:100%;flex:1;display:block;}
+.game-hud{
+  padding:3px 8px;background:rgba(0,0,0,.6);
+  display:flex;justify-content:space-between;font-size:8px;color:#7af;
+  font-family:'Orbitron',monospace;flex-shrink:0;
+}
+#gameOverlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.75);display:none;
+  align-items:center;justify-content:center;flex-direction:column;gap:6px;z-index:20;
+}
+#gameOverlay.show{display:flex;}
+#gameOverlay p{font-size:10px;color:#fff;text-align:center;line-height:1.8;font-family:'Orbitron',monospace;}
+
+/* ── NOKIA LOGO (between screen & keys) ── */
+.nokia-mid{
+  text-align:center;font-family:'Orbitron',monospace;font-size:10px;
+  letter-spacing:4px;color:#3a6080;margin:4px 0 6px;
+}
+
+/* ── D-PAD & SOFT KEYS ── */
+.nav-section{margin-bottom:8px;}
+.soft-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;padding:0 8px;}
+.soft-btn{
+  height:20px;padding:0 10px;background:linear-gradient(180deg,#282c3a,#1a1d28);
+  border-radius:10px;color:#7aabcc;font-size:8px;letter-spacing:1px;
+  cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,.5),inset 0 1px rgba(255,255,255,.06);
+  border:none;transition:all .1s;display:flex;align-items:center;
+}
+.soft-btn:active{transform:translateY(1px);}
+.dpad-wrap{display:flex;align-items:center;justify-content:center;gap:8px;}
+.call-end-wrap{display:flex;align-items:center;gap:8px;}
+.btn-call,.btn-end{
+  width:46px;height:24px;border-radius:12px;border:none;cursor:pointer;
+  font-size:14px;box-shadow:0 3px 6px rgba(0,0,0,.5);transition:all .1s;
+  display:flex;align-items:center;justify-content:center;
+}
+.btn-call{background:linear-gradient(180deg,#1e7a30,#0f4a1c);}
+.btn-end{background:linear-gradient(180deg,#7a1e1e,#4a0f0f);}
+.btn-call:active,.btn-end:active{transform:translateY(1px);}
+.dpad{
+  width:52px;height:52px;position:relative;display:flex;align-items:center;justify-content:center;
+}
+.dpad-center{
+  width:24px;height:24px;border-radius:50%;
+  background:linear-gradient(145deg,#3a3e50,#22252f);
+  box-shadow:0 3px 8px rgba(0,0,0,.6),inset 0 1px rgba(255,255,255,.1);
+  cursor:pointer;border:none;z-index:2;display:flex;align-items:center;justify-content:center;
+  color:#5588aa;font-size:10px;transition:all .1s;
+}
+.dpad-center:active{transform:scale(.95);}
+.dpad-arrow{
+  position:absolute;width:16px;height:16px;
+  background:linear-gradient(145deg,#2e3245,#1a1d28);
+  border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:8px;color:#556688;box-shadow:0 2px 4px rgba(0,0,0,.5);transition:all .1s;
+  border:none;
+}
+.dpad-arrow:active{transform:scale(.9);}
+.dpad-up{top:0;left:50%;transform:translateX(-50%);}
+.dpad-down{bottom:0;left:50%;transform:translateX(-50%);}
+.dpad-left{left:0;top:50%;transform:translateY(-50%);}
+.dpad-right{right:0;top:50%;transform:translateY(-50%);}
+.dpad-up:active{transform:translateX(-50%) translateY(1px);}
+.dpad-down:active{transform:translateX(-50%) translateY(-1px);}
+.dpad-left:active{transform:translateY(-50%) translateX(1px);}
+.dpad-right:active{transform:translateY(-50%) translateX(-1px);}
+
+/* ── KEYPAD ── */
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;padding:0 6px;}
+.key{
+  height:30px;background:linear-gradient(180deg,#2c303e,#1c1f2a);
+  border-radius:7px;border:none;cursor:pointer;color:#ccd;
+  font-size:12px;font-weight:600;
+  box-shadow:0 2px 5px rgba(0,0,0,.5),inset 0 1px rgba(255,255,255,.06);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  line-height:1;transition:all .1s;position:relative;
+}
+.key sub{font-size:6px;color:#556;font-weight:400;position:absolute;bottom:3px;right:5px;}
+.key:active,.key.kp{transform:translateY(1px);box-shadow:0 1px 2px rgba(0,0,0,.5);background:linear-gradient(180deg,#1c1f2a,#0e1018);}
+.key-star,.key-hash{font-size:16px;}
+
+/* scrollbar */
+::-webkit-scrollbar{width:2px;}
+::-webkit-scrollbar-thumb{background:#1a3a5a;border-radius:2px;}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+  <!-- Top -->
+  <div style="display:flex;align-items:center;margin-bottom:6px;">
+    <div class="top-pill" style="flex:1;margin:0 auto;"></div>
+  </div>
+  <div class="camera-led"></div>
+  <div class="nokia-top">NOKIA</div>
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <div style="display:flex;align-items:center;gap:4px;">
+      <div class="sig"><span></span><span></span><span></span><span></span></div>
+      <span class="carrier">ZONG</span>
+    </div>
+    <div id="statusTime" style="font-size:9px;color:#5599cc;font-family:'Orbitron',monospace;letter-spacing:1px;">00:00</div>
+    <div class="batt-wrap">
+      <div class="batt"><div class="batt-fill" id="battFill" style="width:100%;background:#4caf50;"></div></div>
+      <span class="batt-pct" id="battPct">100%</span>
+    </div>
+  </div>
+
+  <!-- Screen -->
+  <div class="screen-frame">
+    <div class="screen" id="screen">
+
+      <!-- LOCK SCREEN -->
+      <div class="view active" id="vLock">
+        <div class="lock-wallpaper"></div>
+        <div class="lock-cam-label">Camera</div>
+        <div class="lock-time-right" id="lockTimeRight">00:00</div>
+        <div class="lock-big-time" id="lockBigTime">00:00</div>
+        <div class="lock-date" id="lockDateDisp">MON 01 JAN</div>
+        <div class="lock-hint">Press any key to unlock</div>
+      </div>
+
+      <!-- HOME SCREEN -->
+      <div class="view" id="vHome">
+        <div class="home-header">
+          <span id="homeTimeH" style="font-family:'Orbitron',monospace;">00:00</span>
+          <span style="letter-spacing:1px;">Nokia 230</span>
+          <span id="homeDateH">01/01</span>
+        </div>
+        <div class="app-grid" id="appGrid">
+          <!-- icons injected by JS -->
+        </div>
+        <div class="home-bottom">
+          <span>Options</span><span>Select</span><span>Back</span>
+        </div>
+      </div>
+
+      <!-- PHONE / DIALER -->
+      <div class="view" id="vPhone">
+        <div class="app-header">
+          <span class="back-btn" onclick="goHome()">◀</span>
+          <span class="app-title">📞 Phone</span>
+        </div>
+        <div class="app-content">
+          <div class="dialer-display" id="dialDisplay">&#8203;</div>
+          <div class="dial-grid">
+            <div class="dial-btn" onclick="dialPress('1')">1<sub>oo</sub></div>
+            <div class="dial-btn" onclick="dialPress('2')">2<sub>abc</sub></div>
+            <div class="dial-btn" onclick="dialPress('3')">3<sub>def</sub></div>
+            <div class="dial-btn" onclick="dialPress('4')">4<sub>ghi</sub></div>
+            <div class="dial-btn" onclick="dialPress('5')">5<sub>jkl</sub></div>
+            <div class="dial-btn" onclick="dialPress('6')">6<sub>mno</sub></div>
+            <div class="dial-btn" onclick="dialPress('7')">7<sub>pqrs</sub></div>
+            <div class="dial-btn" onclick="dialPress('8')">8<sub>tuv</sub></div>
+            <div class="dial-btn" onclick="dialPress('9')">9<sub>wxyz</sub></div>
+            <div class="dial-btn dial-call" onclick="dialCall()">📞</div>
+            <div class="dial-btn" onclick="dialPress('0')">0</div>
+            <div class="dial-btn dial-del" onclick="dialDel()">⌫</div>
+          </div>
+          <div id="callStatus" style="text-align:center;font-size:9px;color:#4f6;margin-top:6px;"></div>
+        </div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="view" id="vMsg">
+        <div class="app-header">
+          <span class="back-btn" onclick="goHome()">◀</span>
+          <span class="app-title">💬 Messages</span>
+        </div>
+        <div class="app-content">
+          <div class="msg-list">
+            <div class="msg-item"><span class="mi-time">10:32</span><div class="mi-name">Ali Raza</div><div class="mi-text">Bhai kab aao gay?</div></div>
+            <div class="msg-item"><span class="mi-time">09:15</span><div class="mi-name">Ammi</div><div class="mi-text">Ghar aao khana tayar hai</div></div>
+            <div class="msg-item"><span class="mi-time">Yesterday</span><div class="mi-name">Zong</div><div class="mi-text">Your balance is Rs 45.20</div></div>
+            <div class="msg-item"><span class="mi-time">Mon</span><div class="mi-name">Ahmed</div><div class="mi-text">OK bhai kal milte hain 👍</div></div>
+          </div>
+          <div class="msg-compose" style="margin-top:8px;">
+            <textarea id="msgText" rows="2" placeholder="Type a message..."></textarea>
+            <div class="msg-send-btn" onclick="sendMsg()">Send ▶</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTACTS -->
+      <div class="view" id="vContacts">
+        <div class="app-header">
+          <span class="back-btn" onclick="goHome()">◀</span>
+          <span class="app-title">👤 Contacts</span>
+        </div>
+        <div class="app-content">
+          <input class="contact-search" placeholder="🔍 Search contacts..." id="contactSearch" oninput="filterContacts()">
+          <div class="contact-list" id="contactList"></div>
+        </div>
+      </div>
+
+      <!-- CLOCK -->
+      <div class="view" id="vClock">
+        <div class="app-header">
+          <span class="back-btn" onclick="goHome()">◀</span>
+          <span class="app-title">🕐 Clock</span>
+        </div>
+        <div class="app-content" style="display:flex;flex-direction:column;">
+          <div class="clock-main">
+            <div class="clock-analog">
+              <svg viewBox="0 0 100 100" id="analogClock">
+                <circle cx="50" cy="50" r="48" fill="none" stroke="#1a3a5a" stroke-width="2"/>
+                <circle cx="50" cy="50" r="44" fill="#050e1a"/>
+                <!-- hour ticks -->
+                <g id="ticks"></g>
+                <line id="hHand" x1="50" y1="50" x2="50" y2="22" stroke="#aac" stroke-width="3" stroke-linecap="round"/>
+                <line id="mHand" x1="50" y1="50" x2="50" y2="16" stroke="#7af" stroke-width="2" stroke-linecap="round"/>
+                <line id="sHand" x1="50" y1="54" x2="50" y2="10" stroke="#f74" stroke-width="1" stroke-linecap="round"/>
+                <circle cx="50" cy="50" r="3" fill="#fff"/>
+              </svg>
+            </div>
+            <div class="clock-digital" id="clockDigital">00:00:00</div>
+            <div class="clock-date-full" id="clockDateFull">Monday, 01 January 2024</div>
+          </div>
+          <div class="alarm-section">
+            <div class="alarm-label">ALARMS</div>
+            <div class="alarm-item">
+              <span class="alarm-time">06:00</span>
+              <div class="alarm-toggle on" id="alarm1" onclick="toggleAlarm('alarm1')"></div>
+            </div>
+            <div class="alarm-item">
+              <span class="alarm-time">08:30</span>
+              <div class="alarm-toggle" id="alarm2" onclick="toggleAlarm('alarm2')"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="view" id="vSettings">
+        <div class="app-header">
+          <span class="back-btn" onclick="goHome()">◀</span>
+          <span class="app-title">⚙️ Settings</span>
+        </div>
+        <div class="app-content" style="padding:4px 6px;">
+          <div class="setting-item" id="si-wifi" onclick="tapSetting('wifi')">
+            <span class="setting-label">📶 Wi-Fi</span>
+            <span class="setting-val" id="s-wifi">On</span>
+          </div>
+          <div class="setting-item" id="si-bluetooth" onclick="tapSetting('bluetooth')">
+            <span class="setting-label">🔵 Bluetooth</span>
+            <span class="setting-val" id="s-bluetooth">Off</span>
+          </div>
+          <div class="setting-item" id="si-sound" onclick="tapSetting('sound')">
+            <span class="setting-label">🔊 Sound</span>
+            <span class="setting-val" id="s-sound">Normal</span>
+          </div>
+          <div class="setting-item" id="si-data" onclick="tapSetting('data')">
+            <span class="setting-label">📡 Mobile Data</span>
+            <span class="setting-val" id="s-data">On</span>
+          </div>
+          <div class="setting-item" id="si-night" onclick="tapSetting('night')">
+            <span class="setting-label">🌙 Night Mode</span>
+            <span class="setting-val" id="s-night">Off</span>
+          </div>
+          <div class="setting-item" id="si-lang" onclick="tapSetting('lang')">
+            <span class="setting-label">🌐 Language</span>
+            <span class="setting-val" id="s-lang">English</span>
+          </div>
+          <div class="setting-item" id="si-about" onclick="tapSetting('about')">
+            <span class="setting-label">📱 About Phone</span>
+            <span class="setting-val" id="s-about">Nokia 230</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEDIA PLAYER -->
+      <div class="view" id="vMedia">
+        <div class="app-header">
+          <span class="back-btn" onclick="goHome()">◀</span>
+          <span class="app-title">🎵 Media</span>
+        </div>
+        <div class="app-content">
+          <div class="media-art" id="mediaArt">🎵</div>
+          <div class="media-track" id="mediaTrack">Dil Dil Pakistan</div>
+          <div class="media-artist" id="mediaArtist">Vital Signs</div>
+          <div class="media-progress"><div class="media-bar" id="mediaBar"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:7px;color:#446;margin-top:2px;">
+            <span id="mediaPos">1:12</span><span id="mediaDur">3:45</span>
+          </div>
+          <div class="media-controls">
+            <div class="media-btn" onclick="mediaPrev()">⏮</div>
+            <div class="media-btn play-btn" id="playBtn" onclick="mediaPlay()">▶</div>
+            <div class="media-btn" onclick="mediaNext()">⏭</div>
+          </div>
+          <div class="media-list" id="mediaList"></div>
+        </div>
+      </div>
+
+      <!-- CAMERA -->
+      <div class="view" id="vCamera">
+        <div class="camera-view">
+          <svg class="cam-grid" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <line x1="33" y1="0" x2="33" y2="100" stroke="white" stroke-width=".3"/>
+            <line x1="67" y1="0" x2="67" y2="100" stroke="white" stroke-width=".3"/>
+            <line x1="0" y1="33" x2="100" y2="33" stroke="white" stroke-width=".3"/>
+            <line x1="0" y1="67" x2="100" y2="67" stroke="white" stroke-width=".3"/>
+          </svg>
+          <div class="cam-crosshair"></div>
+          <div style="position:absolute;top:8px;right:10px;font-size:8px;color:rgba(100,200,255,.6);" id="camTime">00:00</div>
+          <div style="position:absolute;bottom:40px;left:10px;font-size:7px;color:rgba(100,200,255,.5);">2MP</div>
+        </div>
+        <div class="cam-controls">
+          <span class="back-btn" onclick="goHome()" style="color:#5599cc;font-size:9px;cursor:pointer;padding:4px 8px;background:rgba(40,100,180,.2);border-radius:4px;">◀</span>
+          <div class="cam-shutter" onclick="camShoot()"></div>
+          <span class="cam-btn">Flash: Off</span>
+        </div>
+      </div>
+
+      <!-- CAR GAME -->
+      <div class="view" id="vGame" style="position:relative;">
+        <div class="game-hud">
+          <span>Score: <span id="gScore">0</span></span>
+          <span>CAR RACE</span>
+          <span>Hi: <span id="gHi">0</span></span>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+        <div id="gameOverlay">
+          <p id="goText">PRESS ● TO START</p>
+        </div>
+        <div class="app-header" style="flex-shrink:0;position:static;">
+          <span class="back-btn" onclick="stopGameAndGoHome()">◀ Back</span>
+          <span style="font-size:8px;color:#668;">Arrow/2468 to move</span>
+        </div>
+      </div>
+
+    </div><!-- /screen -->
+  </div><!-- /screen-frame -->
+
+  <!-- Nokia mid logo -->
+  <div class="nokia-mid">NOKIA</div>
+
+  <!-- Soft keys + D-pad + Call/End -->
+  <div class="nav-section">
+    <div class="soft-row">
+      <button class="soft-btn" onclick="softLeft()">Options</button>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="dpad">
+          <button class="dpad-arrow dpad-up" onclick="dpadUp()">▲</button>
+          <button class="dpad-arrow dpad-down" onclick="dpadDown()">▼</button>
+          <button class="dpad-arrow dpad-left" onclick="dpadLeft()">◀</button>
+          <button class="dpad-arrow dpad-right" onclick="dpadRight()">▶</button>
+          <button class="dpad-center" id="dpadCenter" onclick="dpadSelect()">●</button>
+        </div>
+        <div class="call-end-wrap">
+          <button class="btn-call" onclick="btnCall()">📞</button>
+          <button class="btn-end" onclick="btnEnd()">📵</button>
+        </div>
+      </div>
+      <button class="soft-btn" onclick="softRight()">Back</button>
+    </div>
+  </div>
+
+  <!-- Keypad -->
+  <div class="keypad">
+    <button class="key" data-k="1" onclick="keyPress('1')">1<sub>oo</sub></button>
+    <button class="key" data-k="2" onclick="keyPress('2')">2<sub>abc</sub></button>
+    <button class="key" data-k="3" onclick="keyPress('3')">3<sub>def</sub></button>
+    <button class="key" data-k="4" onclick="keyPress('4')">4<sub>ghi</sub></button>
+    <button class="key" data-k="5" onclick="keyPress('5')">5<sub>jkl</sub></button>
+    <button class="key" data-k="6" onclick="keyPress('6')">6<sub>mno</sub></button>
+    <button class="key" data-k="7" onclick="keyPress('7')">7<sub>pqrs</sub></button>
+    <button class="key" data-k="8" onclick="keyPress('8')">8<sub>tuv</sub></button>
+    <button class="key" data-k="9" onclick="keyPress('9')">9<sub>wxyz</sub></button>
+    <button class="key key-star" data-k="*" onclick="keyPress('*')">✱</button>
+    <button class="key" data-k="0" onclick="keyPress('0')">0</button>
+    <button class="key key-hash" data-k="#" onclick="keyPress('#')">#</button>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────
+const contacts=[
+  {name:'Ali Raza',num:'0300-1234567',color:'#2266aa',init:'A'},
+  {name:'Ammi Jan',num:'0321-9876543',color:'#aa2266',init:'A'},
+  {name:'Ahmed Bhai',num:'0312-5551234',color:'#22aa66',init:'A'},
+  {name:'Bilal',num:'0333-7654321',color:'#aa6622',init:'B'},
+  {name:'Usman',num:'0345-1122334',color:'#6622aa',init:'U'},
+  {name:'Sara',num:'0301-9988776',color:'#22aaaa',init:'S'},
+  {name:'Zara',num:'0311-4433221',color:'#aa2222',init:'Z'},
+];
+const apps=[
+  {id:'vPhone',icon:'📞',label:'Phone',bg:'linear-gradient(135deg,#1a4e2e,#0d2e1a)'},
+  {id:'vMsg',icon:'💬',label:'Messages',bg:'linear-gradient(135deg,#1a3a6e,#0d1e4a)'},
+  {id:'vContacts',icon:'👤',label:'Contacts',bg:'linear-gradient(135deg,#3a2e1a,#1e1a0d)'},
+  {id:'vMedia',icon:'🎵',label:'Media',bg:'linear-gradient(135deg,#2e1a4e,#1a0d2e)'},
+  {id:'vClock',icon:'🕐',label:'Clock',bg:'linear-gradient(135deg,#1a2e4e,#0d1a2e)'},
+  {id:'vSettings',icon:'⚙️',label:'Settings',bg:'linear-gradient(135deg,#2e2e2e,#1a1a1a)'},
+  {id:'vGame',icon:'🚗',label:'Car Game',bg:'linear-gradient(135deg,#4e2e1a,#2e1a0d)'},
+  {id:'vCamera',icon:'📷',label:'Camera',bg:'linear-gradient(135deg,#1a4e4e,#0d2e2e)'},
+];
+const songs=[
+  {title:'Dil Dil Pakistan',artist:'Vital Signs',emoji:'🎸',dur:'3:45'},
+  {title:'Jazba Junoon',artist:'Strings',emoji:'🎵',dur:'4:12'},
+  {title:'Aankhon Kay Sagar',artist:'Nusrat Fateh Ali',emoji:'🎤',dur:'5:30'},
+  {title:'Mera Yaar',artist:'Atif Aslam',emoji:'🎶',dur:'3:58'},
+];
+
+// ── STATE ────────────────────────────────────────────────
+let isLocked=true, currentView='vLock';
+let dialNum='', callActive=false;
+let mediaPlaying=false, mediaIdx=0, mediaProgress=35;
+let settingStates={wifi:'On',bluetooth:'Off',sound:'Normal',data:'On'};
+let selectedAppIdx=0;
+let batt=100;
+let gameRunning=false, gameOver=false, score=0, hiScore=0;
+const gKeys={};
+
+// ── TIME ─────────────────────────────────────────────────
+function pad(n){return String(n).padStart(2,'0');}
+const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const daysShort=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+
+function updateTime(){
+  const n=new Date();
+  const h=pad(n.getHours()),m=pad(n.getMinutes()),s=pad(n.getSeconds());
+  const ts=`${h}:${m}`;
+  const d=n.getDate(),mo=n.getMonth(),y=n.getFullYear(),wd=n.getDay();
+  document.getElementById('statusTime').textContent=ts;
+  document.getElementById('lockBigTime').textContent=ts;
+  document.getElementById('lockTimeRight').textContent=ts;
+  document.getElementById('lockDateDisp').textContent=`${daysShort[wd]} ${pad(d)} ${months[mo].slice(0,3).toUpperCase()}`;
+  document.getElementById('homeTimeH').textContent=ts;
+  document.getElementById('homeDateH').textContent=`${pad(d)}/${pad(mo+1)}`;
+  document.getElementById('clockDigital').textContent=`${h}:${m}:${s}`;
+  document.getElementById('clockDateFull').textContent=`${days[wd]}, ${pad(d)} ${months[mo]} ${y}`;
+  document.getElementById('camTime').textContent=ts;
+  // analog clock
+  const hDeg=(n.getHours()%12)*30+n.getMinutes()*.5;
+  const mDeg=n.getMinutes()*6;
+  const sDeg=n.getSeconds()*6;
+  rotateHand('hHand',hDeg,22);
+  rotateHand('mHand',mDeg,16);
+  rotateHand('sHand',sDeg,10);
+}
+function rotateHand(id,deg,len){
+  const r=deg*Math.PI/180;
+  const x2=50+len*Math.sin(r), y2=50-len*Math.cos(r);
+  const el=document.getElementById(id);
+  if(el){el.setAttribute('x2',x2);el.setAttribute('y2',y2);}
+}
+// Draw clock ticks
+(function(){
+  const g=document.getElementById('ticks');
+  if(!g)return;
+  for(let i=0;i<12;i++){
+    const a=i*30*Math.PI/180;
+    const x1=50+42*Math.sin(a),y1=50-42*Math.cos(a);
+    const x2=50+38*Math.sin(a),y2=50-38*Math.cos(a);
+    const l=document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',x2);l.setAttribute('y2',y2);
+    l.setAttribute('stroke','#1a3a5a');l.setAttribute('stroke-width','2');
+    g.appendChild(l);
+  }
+})();
+updateTime();setInterval(updateTime,1000);
+
+// ── BATTERY ──────────────────────────────────────────────
+setInterval(()=>{
+  if(gameRunning&&batt>0) batt=Math.max(0,batt-.08);
+  else if(!gameRunning&&batt<100) batt=Math.min(100,batt+.02);
+  const f=document.getElementById('battFill');
+  f.style.width=batt+'%';
+  f.style.background=batt>40?'#4caf50':batt>20?'#ff9800':'#f44336';
+  document.getElementById('battPct').textContent=Math.round(batt)+'%';
+},600);
+
+// ── NAVIGATION ───────────────────────────────────────────
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  currentView=id;
+}
+function unlock(){
+  isLocked=false;
+  buildAppGrid();
+  buildContactList();
+  buildMediaList();
+  showView('vHome');
+}
+function lock(){
+  isLocked=true;
+  stopGame();
+  showView('vLock');
+}
+function goHome(){
+  if(gameRunning||gameOver) stopGame();
+  showView('vHome');
+}
+function openApp(id){
+  showView(id);
+  if(id==='vGame') initGameScreen();
+}
+
+// ── APP GRID ─────────────────────────────────────────────
+function buildAppGrid(){
+  const g=document.getElementById('appGrid');
+  g.innerHTML='';
+  apps.forEach((a,i)=>{
+    const d=document.createElement('div');
+    d.className='app-icon'+(i===selectedAppIdx?' sel':'');
+    d.onclick=()=>openApp(a.id);
+    d.innerHTML=`<div class="ic" style="background:${a.bg}">${a.icon}</div><span>${a.label}</span>`;
+    g.appendChild(d);
+  });
+}
+
+// ── CONTACTS ─────────────────────────────────────────────
+function buildContactList(filter=''){
+  const cl=document.getElementById('contactList');
+  cl.innerHTML='';
+  contacts.filter(c=>c.name.toLowerCase().includes(filter.toLowerCase())).forEach(c=>{
+    const d=document.createElement('div');
+    d.className='contact-item';
+    d.onclick=()=>{showView('vPhone');dialNum=c.num;document.getElementById('dialDisplay').textContent=c.num;};
+    d.innerHTML=`<div class="contact-avatar" style="background:${c.color}">${c.init}</div>
+      <div><div class="contact-name">${c.name}</div><div class="contact-num">${c.num}</div></div>`;
+    cl.appendChild(d);
+  });
+}
+function filterContacts(){buildContactList(document.getElementById('contactSearch').value);}
+
+// ── DIALER ────────────────────────────────────────────────
+function dialPress(d){dialNum+=d;document.getElementById('dialDisplay').textContent=dialNum||'\u200b';}
+function dialDel(){dialNum=dialNum.slice(0,-1);document.getElementById('dialDisplay').textContent=dialNum||'\u200b';}
+function dialCall(){
+  if(!dialNum)return;
+  callActive=true;
+  const s=document.getElementById('callStatus');
+  s.textContent='Calling...';
+  setTimeout(()=>{s.textContent='Connected ✓';},1500);
+}
+
+// ── MEDIA ─────────────────────────────────────────────────
+let mediaTimer=null;
+function buildMediaList(){
+  const ml=document.getElementById('mediaList');
+  ml.innerHTML='';
+  songs.forEach((s,i)=>{
+    const d=document.createElement('div');
+    d.className='media-list-item'+(i===mediaIdx?' playing':'');
+    d.textContent=`${s.title} - ${s.artist}`;
+    d.onclick=()=>{mediaIdx=i;loadSong();};
+    ml.appendChild(d);
+  });
+}
+function loadSong(){
+  const s=songs[mediaIdx];
+  document.getElementById('mediaTrack').textContent=s.title;
+  document.getElementById('mediaArtist').textContent=s.artist;
+  document.getElementById('mediaArt').textContent=s.emoji;
+  document.getElementById('mediaDur').textContent=s.dur;
+  mediaProgress=0;
+  buildMediaList();
+}
+function mediaPlay(){
+  mediaPlaying=!mediaPlaying;
+  document.getElementById('playBtn').textContent=mediaPlaying?'⏸':'▶';
+  if(mediaPlaying){
+    mediaTimer=setInterval(()=>{
+      mediaProgress=Math.min(100,mediaProgress+0.5);
+      document.getElementById('mediaBar').style.width=mediaProgress+'%';
+      const tot=songs[mediaIdx].dur.split(':');
+      const totalSec=parseInt(tot[0])*60+parseInt(tot[1]);
+      const cur=Math.floor(totalSec*mediaProgress/100);
+      document.getElementById('mediaPos').textContent=`${Math.floor(cur/60)}:${pad(cur%60)}`;
+      if(mediaProgress>=100){mediaNext();}
+    },200);
+  } else {clearInterval(mediaTimer);}
+}
+function mediaNext(){mediaIdx=(mediaIdx+1)%songs.length;loadSong();if(mediaPlaying){clearInterval(mediaTimer);mediaPlaying=false;mediaPlay();}}
+function mediaPrev(){mediaIdx=(mediaIdx-1+songs.length)%songs.length;loadSong();}
+
+// ── SETTINGS ─────────────────────────────────────────────
+const toggleMap={
+  wifi:['On','Off'],
+  bluetooth:['Off','On'],
+  sound:['Normal','Silent','Vibrate'],
+  data:['On','Off'],
+  night:['Off','On'],
+  lang:['English','Urdu','اردو'],
+  about:['Nokia 230','v1.0.0','RAM: 16MB','© Nokia 2024']
+};
+function tapSetting(k){
+  // visual tap flash
+  const si=document.getElementById('si-'+k);
+  if(si){si.classList.add('tapped');setTimeout(()=>si.classList.remove('tapped'),200);}
+  const opts=toggleMap[k];
+  if(!opts)return;
+  if(!settingStates[k]) settingStates[k]=opts[0];
+  const cur=opts.indexOf(settingStates[k]);
+  settingStates[k]=opts[(cur+1)%opts.length];
+  const el=document.getElementById('s-'+k);
+  if(!el)return;
+  el.textContent=settingStates[k];
+  // color coding
+  el.className='setting-val';
+  const v=settingStates[k];
+  if(v==='On'||v==='Normal') el.classList.add('on-val');
+  else if(v==='Off'||v==='Silent') el.classList.add('off-val');
+  // night mode effect
+  if(k==='night'){
+    document.getElementById('screen').style.filter=v==='On'?'sepia(.4) brightness(.8)':'';
+  }
+}
+// init setting colors
+function initSettingColors(){
+  Object.keys(settingStates).forEach(k=>{
+    const el=document.getElementById('s-'+k);
+    if(!el)return;
+    const v=settingStates[k];
+    if(v==='On'||v==='Normal') el.classList.add('on-val');
+    else if(v==='Off'||v==='Silent') el.classList.add('off-val');
+  });
+}
+
+// ── CLOCK ALARM ───────────────────────────────────────────
+function toggleAlarm(id){document.getElementById(id).classList.toggle('on');}
+
+// ── CAMERA ────────────────────────────────────────────────
+function camShoot(){
+  const s=document.querySelector('.cam-shutter');
+  s.style.background='rgba(255,255,255,.9)';
+  setTimeout(()=>s.style.background='rgba(255,255,255,.2)',200);
+}
+
+// ── MSG ───────────────────────────────────────────────────
+function sendMsg(){
+  const t=document.getElementById('msgText').value.trim();
+  if(!t)return;
+  const ml=document.querySelector('.msg-list');
+  const d=document.createElement('div');d.className='msg-item';
+  d.innerHTML=`<span class="mi-time">Now</span><div class="mi-name">Me</div><div class="mi-text">${t}</div>`;
+  ml.prepend(d);
+  document.getElementById('msgText').value='';
+}
+
+// ── CAR GAME ─────────────────────────────────────────────
+let car,obstacles,frame,animId2,roadOff;
+const canvas=document.getElementById('gameCanvas');
+const ctx=canvas.getContext('2d');
+
+function initGameScreen(){
+  const gs=document.getElementById('vGame');
+  canvas.width=246;canvas.height=gs.offsetHeight-60||140;
+  document.getElementById('gameOverlay').className='show';
+  document.getElementById('goText').textContent='Press ● to Start';
+  gameOver=false;gameRunning=false;
+}
+function startGame(){
+  document.getElementById('gameOverlay').className='';
+  car={x:canvas.width/2-10,y:canvas.height-50,w:18,h:28,spd:3};
+  obstacles=[];score=0;frame=0;roadOff=0;gameRunning=true;gameOver=false;
+  document.getElementById('gScore').textContent='0';
+  loop();
+}
+function stopGame(){
+  gameRunning=false;
+  if(animId2)cancelAnimationFrame(animId2);
+}
+function stopGameAndGoHome(){stopGame();goHome();}
+function endGame(){
+  gameRunning=false;gameOver=true;
+  if(score>hiScore)hiScore=score;
+  document.getElementById('gHi').textContent=hiScore;
+  document.getElementById('goText').textContent=`GAME OVER\nScore: ${score}\nPress ● to restart`;
+  document.getElementById('gameOverlay').className='show';
+  if(animId2)cancelAnimationFrame(animId2);
+}
+function loop(){
+  if(!gameRunning)return;
+  roadOff=(roadOff+4)%20;frame++;score++;
+  document.getElementById('gScore').textContent=score;
+  if(gKeys['ArrowLeft']||gKeys['4']) car.x=Math.max(16,car.x-3.5);
+  if(gKeys['ArrowRight']||gKeys['6']) car.x=Math.min(canvas.width-car.w-16,car.x+3.5);
+  if(gKeys['ArrowUp']||gKeys['2']) car.y=Math.max(0,car.y-3.5);
+  if(gKeys['ArrowDown']||gKeys['8']) car.y=Math.min(canvas.height-car.h,car.y+3.5);
+  obstacles.forEach(o=>o.y+=2+score/400);
+  obstacles=obstacles.filter(o=>o.y<canvas.height+40);
+  if(frame%Math.max(28,75-Math.floor(score/150))===0){
+    const lx=[22,canvas.width/2-9,canvas.width-40];
+    const ln=lx[Math.floor(Math.random()*3)];
+    const cols=['#e74c3c','#3498db','#f39c12','#9b59b6','#e67e22'];
+    obstacles.push({x:ln,y:-30,w:16,h:24,col:cols[Math.floor(Math.random()*5)]});
+  }
+  for(const o of obstacles){
+    if(car.x<o.x+o.w&&car.x+car.w>o.x&&car.y<o.y+o.h&&car.y+car.h>o.y){endGame();return;}
+  }
+  drawGame();
+  animId2=requestAnimationFrame(loop);
+}
+function drawGame(){
+  ctx.fillStyle='#0a1020';ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='#1e2230';ctx.fillRect(14,0,canvas.width-28,canvas.height);
+  ctx.strokeStyle='#2a3040';ctx.lineWidth=1;ctx.setLineDash([12,8]);ctx.lineDashOffset=-roadOff;
+  [canvas.width/3,canvas.width*2/3].forEach(lx=>{
+    ctx.beginPath();ctx.moveTo(lx,0);ctx.lineTo(lx,canvas.height);ctx.stroke();
+  });
+  ctx.setLineDash([]);
+  ctx.strokeStyle='#334455';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(14,0);ctx.lineTo(14,canvas.height);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(canvas.width-14,0);ctx.lineTo(canvas.width-14,canvas.height);ctx.stroke();
+  obstacles.forEach(o=>drawCar(o.x,o.y,o.w,o.h,o.col,false));
+  drawCar(car.x,car.y,car.w,car.h,'#2ecc71',true);
+}
+function drawCar(x,y,w,h,col,isP){
+  ctx.save();
+  const g=ctx.createLinearGradient(x,y,x+w,y);
+  g.addColorStop(0,col);g.addColorStop(.5,isP?'#5ef090':'#fff');g.addColorStop(1,col);
+  ctx.fillStyle=g;ctx.beginPath();ctx.roundRect(x,y,w,h,3);ctx.fill();
+  ctx.fillStyle=isP?'rgba(100,220,255,.6)':'rgba(100,180,255,.5)';
+  ctx.fillRect(x+2,isP?y+3:y+h-9,w-4,7);
+  ctx.fillStyle='#111';
+  [[x-2,y+4],[x+w-2,y+4],[x-2,y+h-8],[x+w-2,y+h-8]].forEach(([wx,wy])=>ctx.fillRect(wx,wy,4,5));
+  ctx.restore();
+}
+// mouse drag game
+let dragging=false;
+canvas.addEventListener('mousedown',()=>{if(gameRunning)dragging=true;});
+canvas.addEventListener('mousemove',e=>{
+  if(!dragging||!gameRunning)return;
+  const r=canvas.getBoundingClientRect();
+  const sx=canvas.width/r.width,sy=canvas.height/r.height;
+  car.x=Math.max(16,Math.min(canvas.width-car.w-16,(e.clientX-r.left)*sx-car.w/2));
+  car.y=Math.max(0,Math.min(canvas.height-car.h,(e.clientY-r.top)*sy-car.h/2));
+});
+canvas.addEventListener('mouseup',()=>dragging=false);
+
+// ── KEYBOARD CONTROLS ────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  gKeys[e.key]=true;
+  const kmap={'1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7','8':'8','9':'9','0':'0','*':'*','#':'#'};
+  if(kmap[e.key]) flashKey(e.key);
+  if(isLocked){unlock();return;}
+  if(e.key==='Escape'||e.key==='Backspace'){
+    if(currentView!=='vHome')goHome();
+    else lock();
+    e.preventDefault();return;
+  }
+  if(e.key==='Enter'||e.key===' '){
+    if(currentView==='vGame'){
+      if(!gameRunning&&!gameOver)startGame();
+      else if(gameOver)startGame();
+    }
+    e.preventDefault();return;
+  }
+  if(currentView==='vPhone'&&kmap[e.key]&&e.key!=='*'){dialPress(e.key);}
+  if(e.key==='ArrowLeft'&&currentView==='vHome'){selectedAppIdx=Math.max(0,selectedAppIdx-1);buildAppGrid();}
+  if(e.key==='ArrowRight'&&currentView==='vHome'){selectedAppIdx=Math.min(apps.length-1,selectedAppIdx+1);buildAppGrid();}
+  if(e.key==='ArrowUp'&&currentView==='vHome'){selectedAppIdx=Math.max(0,selectedAppIdx-3);buildAppGrid();}
+  if(e.key==='ArrowDown'&&currentView==='vHome'){selectedAppIdx=Math.min(apps.length-1,selectedAppIdx+3);buildAppGrid();}
+  e.preventDefault();
+});
+document.addEventListener('keyup',e=>{gKeys[e.key]=false;});
+function flashKey(k){
+  const el=document.querySelector(`.key[data-k="${k}"]`);
+  if(el){el.classList.add('kp');setTimeout(()=>el.classList.remove('kp'),150);}
+}
+
+// ── PHONE BUTTON HANDLERS ─────────────────────────────────
+function keyPress(k){
+  if(isLocked){unlock();return;}
+  if(currentView==='vPhone') dialPress(k);
+  else if(currentView==='vGame'){
+    if(k==='5'){if(!gameRunning&&!gameOver)startGame();else if(gameOver)startGame();}
+    if(k==='4'&&gameRunning) car.x=Math.max(16,car.x-15);
+    if(k==='6'&&gameRunning) car.x=Math.min(canvas.width-car.w-16,car.x+15);
+    if(k==='2'&&gameRunning) car.y=Math.max(0,car.y-15);
+    if(k==='8'&&gameRunning) car.y=Math.min(canvas.height-car.h,car.y+15);
+  }
+}
+function dpadSelect(){
+  if(isLocked){unlock();return;}
+  if(currentView==='vHome') openApp(apps[selectedAppIdx].id);
+  else if(currentView==='vGame'){
+    if(!gameRunning){startGame();}
+    else endGame();
+  }
+}
+function dpadUp(){if(currentView==='vHome'){selectedAppIdx=Math.max(0,selectedAppIdx-3);buildAppGrid();}}
+function dpadDown(){if(currentView==='vHome'){selectedAppIdx=Math.min(apps.length-1,selectedAppIdx+3);buildAppGrid();}}
+function dpadLeft(){if(currentView==='vHome'){selectedAppIdx=Math.max(0,selectedAppIdx-1);buildAppGrid();}}
+function dpadRight(){if(currentView==='vHome'){selectedAppIdx=Math.min(apps.length-1,selectedAppIdx+1);buildAppGrid();}}
+function softLeft(){if(isLocked)unlock();}
+function softRight(){if(currentView!=='vHome'&&currentView!=='vLock')goHome();else lock();}
+function btnCall(){if(isLocked)unlock();else if(currentView==='vPhone')dialCall();}
+function btnEnd(){if(gameRunning)endGame();else if(currentView!=='vLock')lock();}
+
+// init
+buildAppGrid();buildContactList();buildMediaList();initSettingColors();
+</script>
+</body>
+</html>
